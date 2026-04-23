@@ -17,11 +17,52 @@
             min-height: 100vh;
             padding: 2rem 1rem;
             color: #1e2a1f;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Эффект тумана на фоне */
+        .fog-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .fog-particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            filter: blur(20px);
+            animation: floatFog linear infinite;
+        }
+
+        @keyframes floatFog {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-20vh) translateX(60px) scale(1.2);
+                opacity: 0;
+            }
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
         /* главная карточка */
@@ -32,6 +73,19 @@
             text-align: center;
             margin-bottom: 2rem;
             box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         h1 {
@@ -42,6 +96,16 @@
             -webkit-background-clip: text;
             color: transparent;
             margin-bottom: 0.5rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.03);
+            }
         }
 
         .tagline {
@@ -61,6 +125,37 @@
             color: #006400;
             margin: 1rem 0;
             border: 1px solid #32CD32;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ip:hover {
+            background: #c8ffc8;
+            box-shadow: 0 0 20px rgba(50, 205, 50, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .ip::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                left: -50%;
+            }
+            100% {
+                left: 150%;
+            }
         }
 
         .badge {
@@ -73,6 +168,13 @@
             color: #2c4822;
             margin: 0 0.2rem;
             display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            background: #a0d090;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         /* сетка карточек */
@@ -87,12 +189,30 @@
             background: rgba(255, 255, 245, 0.95);
             border-radius: 1.5rem;
             padding: 1.5rem;
-            transition: transform 0.2s;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid rgba(100, 80, 20, 0.2);
+            animation: floatCard 3s ease-in-out infinite;
+            backdrop-filter: blur(10px);
+        }
+
+        .card:nth-child(1) { animation-delay: 0s; }
+        .card:nth-child(2) { animation-delay: 0.5s; }
+        .card:nth-child(3) { animation-delay: 1s; }
+
+        @keyframes floatCard {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            border-color: #32CD32;
+            animation: none;
         }
 
         .card h2 {
@@ -101,6 +221,11 @@
             color: #2c5e2c;
             border-left: 4px solid #32CD32;
             padding-left: 0.8rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .card:hover h2 {
+            border-left-color: #006400;
         }
 
         .card p, .card li {
@@ -117,12 +242,30 @@
             margin: 0.5rem 0;
             padding-left: 1.2rem;
             position: relative;
+            transition: transform 0.2s ease;
+        }
+
+        .card li:hover {
+            transform: translateX(5px);
         }
 
         .card li::before {
             content: "🌫️";
             position: absolute;
             left: 0;
+            animation: rotateEmoji 3s linear infinite;
+        }
+
+        @keyframes rotateEmoji {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(10deg);
+            }
+            75% {
+                transform: rotate(-10deg);
+            }
         }
 
         .link-btn {
@@ -134,12 +277,68 @@
             text-decoration: none;
             font-weight: 600;
             margin-top: 1rem;
-            transition: 0.2s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .link-btn:hover::before {
+            left: 100%;
         }
 
         .link-btn:hover {
-            transform: scale(0.98);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,100,0,0.4);
+            background: linear-gradient(135deg, #008000, #40E040);
+        }
+
+        /* Стили для социальных кнопок */
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 1rem 0;
+        }
+
+        .social-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .discord-btn {
+            background: linear-gradient(135deg, #5865F2, #7289DA);
+        }
+
+        .telegram-btn {
+            background: linear-gradient(135deg, #0088cc, #00B4DB);
+        }
+
+        .owner-btn {
+            background: linear-gradient(135deg, #2c5e2c, #4a8c4a);
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         }
 
         .footer {
@@ -150,6 +349,60 @@
             background: rgba(255,255,245,0.8);
             padding: 1rem;
             border-radius: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Новые элементы */
+        .server-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #32CD32;
+            animation: glowDot 1.5s ease-in-out infinite;
+            box-shadow: 0 0 10px #32CD32;
+        }
+
+        @keyframes glowDot {
+            0%, 100% {
+                box-shadow: 0 0 5px #32CD32;
+            }
+            50% {
+                box-shadow: 0 0 20px #32CD32, 0 0 30px #32CD32;
+            }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 0.8rem;
+            background: rgba(50, 205, 50, 0.1);
+            border-radius: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: scale(1.1);
+            background: rgba(50, 205, 50, 0.2);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #006400;
         }
 
         @media (max-width: 700px) {
@@ -162,93 +415,182 @@
             .card {
                 padding: 1rem;
             }
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            .social-links {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="hero">
-        <h1>🌫️ FOGGYLAND</h1>
-        <div class="tagline">🍃 ванильный SMP • честная игра • уютная атмосфера</div>
-        <div>
-            <span class="badge">🤝 никаких донат-привилегий</span>
-            <span class="badge">🎙️ голосовой чат</span>
-            <span class="badge">⚔️ PvP по желанию</span>
+    <!-- Эффект тумана -->
+    <div class="fog-container" id="fogContainer"></div>
+
+    <div class="container">
+        <div class="hero">
+            <h1>🌫️ FOGGYLAND</h1>
+            <div class="tagline">🍃 ванильный SMP • честная игра • уютная атмосфера</div>
+            <div>
+                <span class="badge">🤝 никаких донат-привилегий</span>
+                <span class="badge">🎙️ голосовой чат</span>
+                <span class="badge">⚔️ PvP по желанию</span>
+            </div>
+            <div class="server-status">
+                <div class="status-dot"></div>
+                <span style="color: #2c5e2c; font-weight: 600;">Сервер онлайн</span>
+            </div>
+            <div>
+                <span class="ip">✨ play.foggyland.ru ✨</span>
+            </div>
+            
+            <!-- Социальные кнопки -->
+            <div class="social-links">
+                <a href="https://discord.gg/ywkNfF7u" class="social-btn discord-btn" target="_blank">
+                    💬 Discord
+                </a>
+                <a href="https://t.me/foggyland" class="social-btn telegram-btn" target="_blank">
+                    📢 Telegram
+                </a>
+                <a href="https://t.me/Alexander_Kronik" class="social-btn owner-btn" target="_blank">
+                    👑 Связаться с владельцем
+                </a>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">1.21.1</div>
+                    <div style="font-size: 0.8rem; color: #3a5e3a;">Версия</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">24/7</div>
+                    <div style="font-size: 0.8rem; color: #3a5e3a;">Онлайн</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">SMP</div>
+                    <div style="font-size: 0.8rem; color: #3a5e3a;">Режим</div>
+                </div>
+            </div>
         </div>
-        <div class="ip">✨ play.foggyland.ru ✨</div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>📜 О сервере</h2>
+                <p>FoggyLand — это ванильный SMP сервер для тех, кто ценит честную игру, уютную атмосферу и настоящее Minecraft-сообщество.</p>
+                <ul>
+                    <li>🔹 Версия: 1.21.1</li>
+                    <li>🔹 PvP только по согласию (/pvp)</li>
+                    <li>🔹 Голосовой чат (PlasmoVoice)</li>
+                    <li>🔹 Защита от гриферства (CoreProtect)</li>
+                    <li>🔹 Максимум честности — нет донат-привилегий</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>🌐 Полезные ссылки</h2>
+                <ul>
+                    <li>🎮 IP сервера: <strong>play.foggyland.ru</strong></li>
+                    <li>📋 Подать заявку: <a href="/whitelist.html" class="link-btn" style="background:#4a6e4a;">Вайтлист</a></li>
+                    <li>💰 Поддержать сервер: <a href="https://store-foggyland.ru" class="link-btn" style="background:#4a6e4a;">store.foggyland.ru</a></li>
+                    <li>💬 Discord: <a href="https://discord.gg/ywkNfF7u" target="_blank" style="color: #5865F2; text-decoration: none; font-weight: 600;">discord.gg/ywkNfF7u</a></li>
+                    <li>📢 Telegram: <a href="https://t.me/foggyland" target="_blank" style="color: #0088cc; text-decoration: none; font-weight: 600;">t.me/foggyland</a></li>
+                    <li>👑 Владелец: <a href="https://t.me/Alexander_Kronik" target="_blank" style="color: #2c5e2c; text-decoration: none; font-weight: 600;">@Alexander_Kronik</a></li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>🎮 Как начать играть</h2>
+                <ol style="margin-left: 1.2rem;">
+                    <li>Установи Minecraft версии 1.21.1 (через лаунчер)</li>
+                    <li>Добавь сервер: <strong>play.foggyland.ru</strong></li>
+                    <li>Подай заявку на вайтлист (ссылка выше)</li>
+                    <li>После подтверждения заходи и наслаждайся!</li>
+                </ol>
+                <p style="margin-top: 0.8rem;">🎙️ Для голосового чата установи мод PlasmoVoice.</p>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h2>🌫️ Почему FoggyLand?</h2>
+                <ul>
+                    <li>🔥 Честная игра — никаких донат-китов и привилегий</li>
+                    <li>🎙️ Живое общение через голосовой чат</li>
+                    <li>⚔️ PvP только для желающих (/pvp)</li>
+                    <li>🛡️ Защита от гриферов и откат действий</li>
+                    <li>💡 Активный администратор (это я!)</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>📢 Поддержка сервера</h2>
+                <p>Если хочешь помочь развитию FoggyLand — ты можешь поддержать проект на <strong>store.foggyland.ru</strong>. Все средства идут на улучшение сервера, хостинг и ивенты.</p>
+                <a href="https://store-foggyland.ru" class="link-btn">🔗 Поддержать</a>
+            </div>
+
+            <div class="card">
+                <h2>🎉 Новости и ивенты</h2>
+                <ul>
+                    <li>🎪 Еженедельные PvP-турниры</li>
+                    <li>🏗️ Конкурсы на лучшую постройку</li>
+                    <li>🎁 Сезонные ивенты с призами</li>
+                    <li>🌟 Розыгрыши среди активных игроков</li>
+                    <li>🆕 Обновления каждую пятницу</li>
+                </ul>
+                <p style="margin-top: 0.8rem;">Следи за новостями в <a href="https://discord.gg/ywkNfF7u" target="_blank" style="color: #5865F2; text-decoration: none; font-weight: 600;">Discord</a> и <a href="https://t.me/foggyland" target="_blank" style="color: #0088cc; text-decoration: none; font-weight: 600;">Telegram</a>!</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            🧡 FoggyLand — место, где ванильный Minecraft становится уютным. <br>
+            © 2026 • IP: play.foggyland.ru • Сайт для доната: store.foggyland.ru
+        </div>
+
+        <!-- Виджет NameMC -->
+        <iframe style="width:728px;height:90px;max-width:100%;border:none;display:block;margin:auto" 
+                src="https://ru.namemc.com/server/foggyland.ru/embed" 
+                width="728" height="90"></iframe>
     </div>
 
-    <div class="grid">
-        <div class="card">
-            <h2>📜 О сервере</h2>
-            <p>FoggyLand — это ванильный SMP сервер для тех, кто ценит честную игру, уютную атмосферу и настоящее Minecraft-сообщество.</p>
-            <ul>
-                <li>🔹 Версия: 1.21.11</li>
-                <li>🔹 PvP только по согласию (/pvp)</li>
-                <li>🔹 Голосовой чат (PlasmoVoice)</li>
-                <li>🔹 Защита от гриферства (CoreProtect)</li>
-                <li>🔹 Максимум честности — нет донат-привилегий</li>
-            </ul>
-        </div>
+    <script>
+        // Создание частиц тумана
+        function createFogParticles() {
+            const container = document.getElementById('fogContainer');
+            const particleCount = 20;
 
-        <div class="card">
-            <h2>⚡ Правила</h2>
-            <ul>
-                <li>✅ Уважение к другим игрокам</li>
-                <li>✅ Запрещён грифер / кража</li>
-                <li>✅ Запрещены читы, X-Ray, авто-клики</li>
-                <li>✅ Лаг-машины и излишняя нагрузка запрещены</li>
-                <li>✅ PvP только по согласию (команда /pvp)</li>
-            </ul>
-            <p>Нарушения → бан (срок определяет администрация).</p>
-        </div>
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'fog-particle';
+                
+                const size = Math.random() * 150 + 100;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                particle.style.animationDelay = (Math.random() * 10) + 's';
+                
+                container.appendChild(particle);
+            }
+        }
 
-        <div class="card">
-            <h2>🌐 Полезные ссылки</h2>
-            <ul>
-                <li>🎮 IP сервера: <strong>play.foggyland.ru</strong></li>
-                <li>📋 Подать заявку: <a href="https://mrkronik.github.io/whitelistfoggyland/" class="link-btn" style="background:#4a6e4a;">Вайтлист</a></li>
-                <li>💰 Поддержать сервер: <a href="https://store.foggyland.ru" class="link-btn" style="background:#4a6e4a;">store.foggyland.ru</a></li>
-                <li>💬 Discord: <i>в разработке</i></li>
-                <li>📧 Связь с админом: <i>в Telegram</i></li>
-            </ul>
-        </div>
-    </div>
+        // Копирование IP при клике
+        document.querySelector('.ip').addEventListener('click', function() {
+            const ipText = this.textContent.replace('✨ ', '').replace(' ✨', '');
+            navigator.clipboard.writeText(ipText).then(() => {
+                const originalText = this.textContent;
+                this.textContent = '✅ Скопировано!';
+                this.style.background = '#90EE90';
+                setTimeout(() => {
+                    this.textContent = originalText;
+                    this.style.background = '#e0ffe0';
+                }, 2000);
+            });
+        });
 
-    <div class="grid">
-        <div class="card">
-            <h2>🎮 Как начать играть</h2>
-            <ol style="margin-left: 1.2rem;">
-                <li>Установи Minecraft версии 1.21 - 1.21.11 (через лаунчер)</li>
-                <li>Добавь сервер: <strong>play.foggyland.ru</strong></li>
-                <li>Подай заявку на вайтлист (ссылка выше)</li>
-                <li>После подтверждения заходи и наслаждайся!</li>
-            </ol>
-            <p style="margin-top: 0.8rem;">🎙️ Для голосового чата установи мод PlasmoVoice.</p>
-        </div>
-
-        <div class="card">
-            <h2>🌫️ Почему FoggyLand?</h2>
-            <ul>
-                <li>🔥 Честная игра — никаких донат-китов и привилегий</li>
-                <li>🎙️ Живое общение через голосовой чат</li>
-                <li>⚔️ PvP только для желающих (/pvp)</li>
-                <li>🛡️ Защита от гриферов и откат действий</li>
-                <li>💡 Активный администратор: MrKronick</li>
-            </ul>
-        </div>
-
-        <div class="card">
-            <h2>📢 Поддержка сервера</h2>
-            <p>Если хочешь помочь развитию FoggyLand — ты можешь поддержать проект на <strong>store.foggyland.ru</strong>. Все средства идут на улучшение сервера, хостинг и ивенты.</p>
-            <a href="https://store.foggyland.ru" class="link-btn">🔗 Поддержать</a>
-        </div>
-    </div>
-
-    <div class="footer">
-        🧡 FoggyLand — место, где ванильный Minecraft становится уютным. <br>
-        © 2026 • IP: play.foggyland.ru • Сайт для доната: store.foggyland.ru
-    </div>
-</div>
+        // Запуск при загрузке
+        window.addEventListener('load', createFogParticles);
+    </script>
 </body>
 </html>
