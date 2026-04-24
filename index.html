@@ -359,15 +359,32 @@
             gap: 0.5rem;
             justify-content: center;
             margin: 1rem 0;
+            flex-wrap: wrap;
         }
 
         .status-dot {
             width: 12px;
             height: 12px;
             border-radius: 50%;
+            transition: all 0.5s ease;
+        }
+
+        .status-dot.online {
             background: #32CD32;
             animation: glowDot 1.5s ease-in-out infinite;
             box-shadow: 0 0 10px #32CD32;
+        }
+
+        .status-dot.offline {
+            background: #ff4444;
+            animation: glowDotOffline 2s ease-in-out infinite;
+            box-shadow: 0 0 10px #ff4444;
+        }
+
+        .status-dot.starting {
+            background: #FFA500;
+            animation: glowDotStarting 1s ease-in-out infinite;
+            box-shadow: 0 0 10px #FFA500;
         }
 
         @keyframes glowDot {
@@ -377,6 +394,45 @@
             50% {
                 box-shadow: 0 0 20px #32CD32, 0 0 30px #32CD32;
             }
+        }
+
+        @keyframes glowDotOffline {
+            0%, 100% {
+                box-shadow: 0 0 5px #ff4444;
+                opacity: 0.7;
+            }
+            50% {
+                box-shadow: 0 0 15px #ff4444, 0 0 25px #ff4444;
+                opacity: 1;
+            }
+        }
+
+        @keyframes glowDotStarting {
+            0%, 100% {
+                box-shadow: 0 0 5px #FFA500;
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 20px #FFA500, 0 0 30px #FFA500;
+                transform: scale(1.3);
+            }
+        }
+
+        .status-text {
+            color: #2c5e2c;
+            font-weight: 600;
+            transition: all 0.5s ease;
+        }
+
+        .countdown {
+            background: #fff3cd;
+            color: #856404;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: inline-block;
         }
 
         .stats-grid {
@@ -444,17 +500,17 @@
     <div class="container">
         <div class="hero">
             <h1>🌫️ FOGGYLAND</h1>
-            <div class="tagline">🍃 ванильный SMP • честная игра • уютная атмосфера</div>
+            <div class="tagline">🍃 ᴠᴀɴɪʟᴀ-sᴍᴘ • честная игра • уютная атмосфера</div>
             <div>
                 <span class="badge">🤝 никаких донат-привилегий</span>
                 <span class="badge">🎙️ голосовой чат</span>
                 <span class="badge">⚔️ PvP по желанию</span>
             </div>
             <div class="server-status">
-                <div class="status-dot"></div>
-                <span style="color: #2c5e2c; font-weight: 600;">Сервер онлайн</span>
-                <span style="color: #3a5e3a; font-size: 0.9rem;">• 7:00–10:00 до 22:00 МСК</span>
+                <div class="status-dot" id="statusDot"></div>
+                <span class="status-text" id="statusText">Загрузка...</span>
             </div>
+            <div id="countdownContainer"></div>
             <div>
                 <span class="ip">✨ play.foggyland.ru ✨</span>
             </div>
@@ -521,6 +577,7 @@
                 <ol style="margin-left: 1.2rem;">
                     <li>Установи Minecraft версии 1.21 - 26.1.2 (через лаунчер)</li>
                     <li>Добавь сервер: <strong>play.foggyland.ru</strong></li>
+                    <li>Подай заявку на вайтлист (ссылка выше)</li>
                     <li>Дождись времени работы сервера (с 7:00–10:00 до 22:00 МСК)</li>
                     <li>После подтверждения заходи и наслаждайся!</li>
                 </ol>
@@ -536,7 +593,7 @@
                     <li>🎙️ Живое общение через голосовой чат</li>
                     <li>⚔️ PvP только для желающих (/pvp)</li>
                     <li>🛡️ Защита от гриферов и откат действий</li>
-                    <li>💡 Активный администратор: MrKronick</li>
+                    <li>💡 Активный администратор (это я!)</li>
                 </ul>
             </div>
 
@@ -553,6 +610,7 @@
                     <li>🏗️ Конкурсы на лучшую постройку</li>
                     <li>🎁 Сезонные ивенты с призами</li>
                     <li>🌟 Розыгрыши среди активных игроков</li>
+                    <li>🆕 Обновления каждую пятницу</li>
                 </ul>
                 <p style="margin-top: 0.8rem;">Следи за новостями в <a href="https://discord.gg/ywkNfF7u" target="_blank" style="color: #5865F2; text-decoration: none; font-weight: 600;">Discord</a> и <a href="https://t.me/foggyland" target="_blank" style="color: #0088cc; text-decoration: none; font-weight: 600;">Telegram</a>!</p>
             </div>
@@ -590,6 +648,86 @@
             }
         }
 
+        // Функция обновления статуса сервера
+        function updateServerStatus() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const currentTime = hours * 60 + minutes;
+            
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            const countdownContainer = document.getElementById('countdownContainer');
+            
+            // Время работы: с 7:00 до 22:00 МСК
+            const startHour = 7;
+            const startMinute = 0;
+            const endHour = 22;
+            const endMinute = 0;
+            
+            const startTime = startHour * 60 + startMinute; // 420 минут
+            const endTime = endHour * 60 + endMinute; // 1320 минут
+            
+            // Период запуска: 7:00 - 10:00
+            const startupEndHour = 10;
+            const startupEndMinute = 0;
+            const startupEndTime = startupEndHour * 60 + startupEndMinute; // 600 минут
+            
+            // Убираем все классы
+            statusDot.className = 'status-dot';
+            
+            if (currentTime >= startTime && currentTime <= endTime) {
+                // Сервер в рабочее время
+                if (currentTime <= startupEndTime) {
+                    // Период запуска (7:00-10:00)
+                    statusDot.classList.add('starting');
+                    statusText.textContent = 'Сервер запускается • 7:00–22:00 МСК';
+                    statusText.style.color = '#FF8C00';
+                    countdownContainer.innerHTML = '<div class="countdown">🟡 Период запуска сервера</div>';
+                } else {
+                    // Полноценная работа (10:00-22:00)
+                    statusDot.classList.add('online');
+                    statusText.textContent = 'Сервер онлайн • 7:00–22:00 МСК';
+                    statusText.style.color = '#2c5e2c';
+                    
+                    // Считаем время до выключения
+                    const timeUntilOffline = endTime - currentTime;
+                    const hoursLeft = Math.floor(timeUntilOffline / 60);
+                    const minutesLeft = timeUntilOffline % 60;
+                    
+                    countdownContainer.innerHTML = `
+                        <div class="countdown" style="background: #d4edda; color: #155724;">
+                            🟢 Сервер будет работать ещё ${hoursLeft}ч ${minutesLeft}мин
+                        </div>
+                    `;
+                }
+            } else {
+                // Сервер оффлайн
+                statusDot.classList.add('offline');
+                statusText.textContent = 'Сервер оффлайн • 7:00–22:00 МСК';
+                statusText.style.color = '#dc3545';
+                
+                // Считаем время до включения
+                let timeUntilOnline;
+                if (currentTime < startTime) {
+                    // Ещё сегодня утром
+                    timeUntilOnline = startTime - currentTime;
+                } else {
+                    // Завтра утром
+                    timeUntilOnline = (24 * 60 - currentTime) + startTime;
+                }
+                
+                const hoursLeft = Math.floor(timeUntilOnline / 60);
+                const minutesLeft = timeUntilOnline % 60;
+                
+                countdownContainer.innerHTML = `
+                    <div class="countdown" style="background: #f8d7da; color: #721c24;">
+                        🔴 Сервер откроется через ${hoursLeft}ч ${minutesLeft}мин
+                    </div>
+                `;
+            }
+        }
+
         // Копирование IP при клике
         document.querySelector('.ip').addEventListener('click', function() {
             const ipText = this.textContent.replace('✨ ', '').replace(' ✨', '');
@@ -605,7 +743,12 @@
         });
 
         // Запуск при загрузке
-        window.addEventListener('load', createFogParticles);
+        window.addEventListener('load', () => {
+            createFogParticles();
+            updateServerStatus();
+            // Обновляем статус каждую минуту
+            setInterval(updateServerStatus, 60000);
+        });
     </script>
 </body>
 </html>
