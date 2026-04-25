@@ -648,85 +648,68 @@
             }
         }
 
-        // Функция обновления статуса сервера
-        function updateServerStatus() {
+// Функция проверки реального статуса сервера через API
+async function updateServerStatus() {
+    const statusDot = document.getElementById('statusDot');
+    const statusText = document.getElementById('statusText');
+    const countdownContainer = document.getElementById('countdownContainer');
+    
+    statusDot.className = 'status-dot starting';
+    statusText.textContent = 'Проверка статуса...';
+    statusText.style.color = '#FFA500';
+    
+    try {
+        // Используем бесплатный API для проверки Minecraft сервера
+        const response = await fetch('https://api.mcsrvstat.us/2/play.foggyland.ru');
+        const data = await response.json();
+        
+        statusDot.className = 'status-dot';
+        
+        if (data.online) {
+            // Сервер онлайн
+            statusDot.classList.add('online');
+            statusText.textContent = `Сервер онлайн • Игроков: ${data.players.online}`;
+            statusText.style.color = '#2c5e2c';
+            
+            countdownContainer.innerHTML = `
+                <div class="countdown" style="background: #d4edda; color: #155724;">
+                    🟢 Сервер работает • Версия: ${data.version}
+                </div>
+            `;
+        } else {
+            // Сервер оффлайн
+            statusDot.classList.add('offline');
+            statusText.textContent = 'Сервер оффлайн';
+            statusText.style.color = '#dc3545';
+            
+            // Показываем расписание работы
             const now = new Date();
             const hours = now.getHours();
-            const minutes = now.getMinutes();
-            const currentTime = hours * 60 + minutes;
-            
-            const statusDot = document.getElementById('statusDot');
-            const statusText = document.getElementById('statusText');
-            const countdownContainer = document.getElementById('countdownContainer');
-            
-            // Время работы: с 7:00 до 22:00 МСК
             const startHour = 7;
-            const startMinute = 0;
             const endHour = 22;
-            const endMinute = 0;
             
-            const startTime = startHour * 60 + startMinute; // 420 минут
-            const endTime = endHour * 60 + endMinute; // 1320 минут
-            
-            // Период запуска: 7:00 - 10:00
-            const startupEndHour = 10;
-            const startupEndMinute = 0;
-            const startupEndTime = startupEndHour * 60 + startupEndMinute; // 600 минут
-            
-            // Убираем все классы
-            statusDot.className = 'status-dot';
-            
-            if (currentTime >= startTime && currentTime <= endTime) {
-                // Сервер в рабочее время
-                if (currentTime <= startupEndTime) {
-                    // Период запуска (7:00-10:00)
-                    statusDot.classList.add('starting');
-                    statusText.textContent = 'Сервер запускается • 7:00–22:00 МСК';
-                    statusText.style.color = '#FF8C00';
-                    countdownContainer.innerHTML = '<div class="countdown">🟡 Период запуска сервера</div>';
-                } else {
-                    // Полноценная работа (10:00-22:00)
-                    statusDot.classList.add('online');
-                    statusText.textContent = 'Сервер онлайн • 7:00–22:00 МСК';
-                    statusText.style.color = '#2c5e2c';
-                    
-                    // Считаем время до выключения
-                    const timeUntilOffline = endTime - currentTime;
-                    const hoursLeft = Math.floor(timeUntilOffline / 60);
-                    const minutesLeft = timeUntilOffline % 60;
-                    
-                    countdownContainer.innerHTML = `
-                        <div class="countdown" style="background: #d4edda; color: #155724;">
-                            🟢 Сервер будет работать ещё ${hoursLeft}ч ${minutesLeft}мин
-                        </div>
-                    `;
-                }
+            if (hours >= startHour && hours < endHour) {
+                countdownContainer.innerHTML = `
+                    <div class="countdown" style="background: #fff3cd; color: #856404;">
+                        🟡 Сервер должен быть онлайн. Возможно, технические работы.
+                    </div>
+                `;
             } else {
-                // Сервер оффлайн
-                statusDot.classList.add('offline');
-                statusText.textContent = 'Сервер оффлайн • 7:00–22:00 МСК';
-                statusText.style.color = '#dc3545';
-                
-                // Считаем время до включения
-                let timeUntilOnline;
-                if (currentTime < startTime) {
-                    // Ещё сегодня утром
-                    timeUntilOnline = startTime - currentTime;
-                } else {
-                    // Завтра утром
-                    timeUntilOnline = (24 * 60 - currentTime) + startTime;
-                }
-                
-                const hoursLeft = Math.floor(timeUntilOnline / 60);
-                const minutesLeft = timeUntilOnline % 60;
-                
                 countdownContainer.innerHTML = `
                     <div class="countdown" style="background: #f8d7da; color: #721c24;">
-                        🔴 Сервер откроется через ${hoursLeft}ч ${minutesLeft}мин
+                        🔴 Сервер работает с 7:00 до 22:00 МСК
                     </div>
                 `;
             }
         }
+    } catch (error) {
+        // Если API недоступен, показываем статус по расписанию
+        console.log('API недоступен, показываем расписание');
+        statusDot.className = 'status-dot offline';
+        statusText.textContent = 'Статус не определён';
+        statusText.style.color = '#dc3545';
+    }
+}
 
         // Копирование IP при клике
         document.querySelector('.ip').addEventListener('click', function() {
@@ -747,7 +730,7 @@
             createFogParticles();
             updateServerStatus();
             // Обновляем статус каждую минуту
-            setInterval(updateServerStatus, 60000);
+            setInterval(updateServerStatus, 10000);
         });
     </script>
 </body>
