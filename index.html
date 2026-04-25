@@ -308,6 +308,85 @@
             background: linear-gradient(135deg, #008000, #40E040);
         }
 
+        /* Стили для маленьких кнопок в полезных ссылках */
+        .links-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.8rem;
+        }
+
+        .link-label {
+            color: #2d3e26;
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .mini-btn {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            border-radius: 1.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            color: white;
+            white-space: nowrap;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .mini-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-whitelist {
+            background: linear-gradient(135deg, #4a6e4a, #5d8a5d);
+        }
+
+        .btn-donate {
+            background: linear-gradient(135deg, #2e7d32, #4caf50);
+        }
+
+        .btn-discord {
+            background: linear-gradient(135deg, #5865F2, #7289DA);
+        }
+
+        .btn-telegram {
+            background: linear-gradient(135deg, #0088cc, #00B4DB);
+        }
+
+        .btn-owner {
+            background: linear-gradient(135deg, #2c5e2c, #4a8c4a);
+        }
+
+        .ip-text {
+            font-family: monospace;
+            font-weight: bold;
+            color: #006400;
+            background: #e0ffe0;
+            padding: 0.3rem 0.8rem;
+            border-radius: 1rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #32CD32;
+        }
+
+        .ip-text:hover {
+            background: #c8ffc8;
+            transform: scale(1.05);
+        }
+
         /* Стили для социальных кнопок */
         .social-links {
             display: flex;
@@ -329,15 +408,15 @@
             color: white;
         }
 
-        .discord-btn {
+        .discord-main-btn {
             background: linear-gradient(135deg, #5865F2, #7289DA);
         }
 
-        .telegram-btn {
+        .telegram-main-btn {
             background: linear-gradient(135deg, #0088cc, #00B4DB);
         }
 
-        .owner-btn {
+        .owner-main-btn {
             background: linear-gradient(135deg, #2c5e2c, #4a8c4a);
         }
 
@@ -522,13 +601,13 @@
             
             <!-- Социальные кнопки -->
             <div class="social-links">
-                <a href="https://discord.gg/ywkNfF7u" class="social-btn discord-btn" target="_blank">
+                <a href="https://discord.gg/ywkNfF7u" class="social-btn discord-main-btn" target="_blank">
                     💬 Discord
                 </a>
-                <a href="https://t.me/foggyland" class="social-btn telegram-btn" target="_blank">
+                <a href="https://t.me/foggyland" class="social-btn telegram-main-btn" target="_blank">
                     📢 Telegram
                 </a>
-                <a href="https://t.me/Alexander_Kronik" class="social-btn owner-btn" target="_blank">
+                <a href="https://t.me/Alexander_Kronik" class="social-btn owner-main-btn" target="_blank">
                     👑 Связаться с владельцем
                 </a>
             </div>
@@ -567,14 +646,43 @@
 
             <div class="card">
                 <h2>🌐 Полезные ссылки</h2>
-                <ul>
-                    <li>🎮 IP сервера: <strong>play.foggyland.ru</strong></li>
-                    <li>📋 Подать заявку: <a href="/whitelist.html" class="link-btn" style="background:#4a6e4a;">Вайтлист</a></li>
-                    <li>💰 Поддержать сервер: <a href="https://store-foggyland.ru" class="link-btn" style="background:#4a6e4a;">store.foggyland.ru</a></li>
-                    <li>💬 Discord: <a href="https://discord.gg/ywkNfF7u" target="_blank" style="color: #5865F2; text-decoration: none; font-weight: 600;">discord.gg/ywkNfF7u</a></li>
-                    <li>📢 Telegram: <a href="https://t.me/foggyland" target="_blank" style="color: #0088cc; text-decoration: none; font-weight: 600;">t.me/foggyland</a></li>
-                    <li>👑 Владелец: <a href="https://t.me/Alexander_Kronik" target="_blank" style="color: #2c5e2c; text-decoration: none; font-weight: 600;">@Alexander_Kronik</a></li>
-                </ul>
+                <div class="links-grid">
+                    <!-- IP сервера -->
+                    <div class="link-item">
+                        <span class="link-label">🎮 IP сервера:</span>
+                        <span class="ip-text" onclick="copyIP('play.foggyland.ru')">play.foggyland.ru</span>
+                    </div>
+                    
+                    <!-- Вайтлист -->
+                    <div class="link-item">
+                        <span class="link-label">📋 Вайтлист:</span>
+                        <a href="/whitelist.html" class="mini-btn btn-whitelist">Подать заявку</a>
+                    </div>
+                    
+                    <!-- Поддержка -->
+                    <div class="link-item">
+                        <span class="link-label">💰 Поддержка:</span>
+                        <a href="https://store-foggyland.ru" class="mini-btn btn-donate">store.foggyland.ru</a>
+                    </div>
+                    
+                    <!-- Discord -->
+                    <div class="link-item">
+                        <span class="link-label">💬 Discord:</span>
+                        <a href="https://discord.gg/ywkNfF7u" target="_blank" class="mini-btn btn-discord">discord.gg/ywkNfF7u</a>
+                    </div>
+                    
+                    <!-- Telegram -->
+                    <div class="link-item">
+                        <span class="link-label">📢 Telegram:</span>
+                        <a href="https://t.me/foggyland" target="_blank" class="mini-btn btn-telegram">t.me/foggyland</a>
+                    </div>
+                    
+                    <!-- Владелец -->
+                    <div class="link-item">
+                        <span class="link-label">👑 Владелец:</span>
+                        <a href="https://t.me/Alexander_Kronik" target="_blank" class="mini-btn btn-owner">@Alexander_Kronik</a>
+                    </div>
+                </div>
             </div>
 
             <div class="card">
@@ -647,89 +755,85 @@
             }
         }
 
-// Функция проверки реального статуса сервера через API
-async function updateServerStatus() {
-    const statusDot = document.getElementById('statusDot');
-    const statusText = document.getElementById('statusText');
-    const countdownContainer = document.getElementById('countdownContainer');
-    
-    statusDot.className = 'status-dot starting';
-    statusText.textContent = 'Проверка статуса...';
-    statusText.style.color = '#FFA500';
-    
-    try {
-        // Используем бесплатный API для проверки Minecraft сервера
-        const response = await fetch('https://api.mcsrvstat.us/2/play.foggyland.ru');
-        const data = await response.json();
-        
-        statusDot.className = 'status-dot';
-        
-        if (data.online) {
-            // Сервер онлайн
-            statusDot.classList.add('online');
-            statusText.textContent = `Сервер онлайн • Игроков: ${data.players.online}`;
-            statusText.style.color = '#2c5e2c';
+        // Копирование IP при клике
+        function copyIP(ip) {
+            navigator.clipboard.writeText(ip).then(() => {
+                // Находим все элементы с классом ip-text
+                const ipElements = document.querySelectorAll('.ip-text');
+                ipElements.forEach(el => {
+                    el.textContent = '✅ Скопировано!';
+                    el.style.background = '#90EE90';
+                    setTimeout(() => {
+                        el.textContent = ip;
+                        el.style.background = '#e0ffe0';
+                    }, 2000);
+                });
+            });
+        }
+
+        // Функция проверки реального статуса сервера через API
+        async function updateServerStatus() {
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            const countdownContainer = document.getElementById('countdownContainer');
             
-            countdownContainer.innerHTML = `
-                <div class="countdown" style="background: #d4edda; color: #155724;">
-                    🟢 Сервер работает • Версия: ${data.version}
-                </div>
-            `;
-        } else {
-            // Сервер оффлайн
-            statusDot.classList.add('offline');
-            statusText.textContent = 'Сервер оффлайн';
-            statusText.style.color = '#dc3545';
+            statusDot.className = 'status-dot starting';
+            statusText.textContent = 'Проверка статуса...';
+            statusText.style.color = '#FFA500';
             
-            // Показываем расписание работы
-            const now = new Date();
-            const hours = now.getHours();
-            const startHour = 7;
-            const endHour = 22;
-            
-            if (hours >= startHour && hours < endHour) {
-                countdownContainer.innerHTML = `
-                    <div class="countdown" style="background: #fff3cd; color: #856404;">
-                        🟡 Сервер должен быть онлайн. Возможно, технические работы.
-                    </div>
-                `;
-            } else {
-                countdownContainer.innerHTML = `
-                    <div class="countdown" style="background: #f8d7da; color: #721c24;">
-                        🔴 Сервер работает с 8:00 до 22:00 МСК
-                    </div>
-                `;
+            try {
+                const response = await fetch('https://api.mcsrvstat.us/2/play.foggyland.ru');
+                const data = await response.json();
+                
+                statusDot.className = 'status-dot';
+                
+                if (data.online) {
+                    statusDot.classList.add('online');
+                    statusText.textContent = `Сервер онлайн • Игроков: ${data.players.online}`;
+                    statusText.style.color = '#2c5e2c';
+                    
+                    countdownContainer.innerHTML = `
+                        <div class="countdown" style="background: #d4edda; color: #155724;">
+                            🟢 Сервер работает • Версия: ${data.version}
+                        </div>
+                    `;
+                } else {
+                    statusDot.classList.add('offline');
+                    statusText.textContent = 'Сервер оффлайн';
+                    statusText.style.color = '#dc3545';
+                    
+                    const now = new Date();
+                    const hours = now.getHours();
+                    const startHour = 7;
+                    const endHour = 22;
+                    
+                    if (hours >= startHour && hours < endHour) {
+                        countdownContainer.innerHTML = `
+                            <div class="countdown" style="background: #fff3cd; color: #856404;">
+                                🟡 Сервер должен быть онлайн. Возможно, технические работы.
+                            </div>
+                        `;
+                    } else {
+                        countdownContainer.innerHTML = `
+                            <div class="countdown" style="background: #f8d7da; color: #721c24;">
+                                🔴 Сервер работает с 8:00 до 22:00 МСК
+                            </div>
+                        `;
+                    }
+                }
+            } catch (error) {
+                console.log('API недоступен, показываем расписание');
+                statusDot.className = 'status-dot offline';
+                statusText.textContent = 'Статус не определён';
+                statusText.style.color = '#dc3545';
             }
         }
-    } catch (error) {
-        // Если API недоступен, показываем статус по расписанию
-        console.log('API недоступен, показываем расписание');
-        statusDot.className = 'status-dot offline';
-        statusText.textContent = 'Статус не определён';
-        statusText.style.color = '#dc3545';
-    }
-}
-
-        // Копирование IP при клике
-        document.querySelector('.ip').addEventListener('click', function() {
-            const ipText = this.textContent.replace('✨ ', '').replace(' ✨', '');
-            navigator.clipboard.writeText(ipText).then(() => {
-                const originalText = this.textContent;
-                this.textContent = '✅ Скопировано!';
-                this.style.background = '#90EE90';
-                setTimeout(() => {
-                    this.textContent = originalText;
-                    this.style.background = '#e0ffe0';
-                }, 2000);
-            });
-        });
 
         // Запуск при загрузке
         window.addEventListener('load', () => {
             createFogParticles();
             updateServerStatus();
-            // Обновляем статус каждую СЕКУНДУ
-            setInterval(updateServerStatus, 1000);
+            setInterval(updateServerStatus, 100);
         });
     </script>
 </body>
