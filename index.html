@@ -349,8 +349,8 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
-        .btn-whitelist {
-            background: linear-gradient(135deg, #4a6e4a, #5d8a5d);
+        .btn-rules {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
         }
 
         .btn-donate {
@@ -367,6 +367,10 @@
 
         .btn-owner {
             background: linear-gradient(135deg, #2c5e2c, #4a8c4a);
+        }
+
+        .btn-moder {
+            background: linear-gradient(135deg, #e67e22, #f39c12);
         }
 
         .ip-text {
@@ -619,7 +623,7 @@
                 </div>
                 <div class="stat-item">
                     <div class="stat-value">🌅🌙</div>
-                    <div style="font-size: 0.8rem; color: #3a5e3a;">7:00–22:00</div>
+                    <div style="font-size: 0.8rem; color: #3a5e3a;">8:00–22:00</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value">ᴠᴀɴɪʟᴀ-sᴍᴘ</div>
@@ -653,10 +657,10 @@
                         <span class="ip-text" onclick="copyIP('play.foggyland.ru')">play.foggyland.ru</span>
                     </div>
                     
-                    <!-- Вайтлист -->
+                    <!-- Правила -->
                     <div class="link-item">
-                        <span class="link-label">📋 Вайтлист:</span>
-                        <a href="/whitelist.html" class="mini-btn btn-whitelist">Подать заявку</a>
+                        <span class="link-label">📜 Правила:</span>
+                        <a href="https://rules.foggyland.ru" target="_blank" class="mini-btn btn-rules">rules.foggyland.ru</a>
                     </div>
                     
                     <!-- Поддержка -->
@@ -677,6 +681,12 @@
                         <a href="https://t.me/foggyland" target="_blank" class="mini-btn btn-telegram">t.me/foggyland</a>
                     </div>
                     
+                    <!-- Заявка на модератора -->
+                    <div class="link-item">
+                        <span class="link-label">🛡️ Стать модером:</span>
+                        <a href="https://add-moder.foggyland.ru" target="_blank" class="mini-btn btn-moder">Подать заявку</a>
+                    </div>
+                    
                     <!-- Владелец -->
                     <div class="link-item">
                         <span class="link-label">👑 Владелец:</span>
@@ -690,9 +700,8 @@
                 <ol style="margin-left: 1.2rem;">
                     <li>Установи Minecraft версии 1.21 - 26.1.2 (через лаунчер)</li>
                     <li>Добавь сервер: <strong>play.foggyland.ru</strong></li>
-                    <li>Подай заявку на вайтлист (ссылка выше)</li>
-                    <li>Дождись времени работы сервера (с 7:00–10:00 до 22:00 МСК)</li>
-                    <li>После подтверждения заходи и наслаждайся!</li>
+                    <li>Дождись времени работы сервера (с 8:00 до 22:00 МСК)</li>
+                    <li>Заходи и наслаждайся уютной игрой!</li>
                 </ol>
                 <p style="margin-top: 0.8rem;">🎙️ Для голосового чата установи мод PlasmoVoice.</p>
             </div>
@@ -758,7 +767,6 @@
         // Копирование IP при клике
         function copyIP(ip) {
             navigator.clipboard.writeText(ip).then(() => {
-                // Находим все элементы с классом ip-text
                 const ipElements = document.querySelectorAll('.ip-text');
                 ipElements.forEach(el => {
                     el.textContent = '✅ Скопировано!';
@@ -804,7 +812,7 @@
                     
                     const now = new Date();
                     const hours = now.getHours();
-                    const startHour = 7;
+                    const startHour = 8;
                     const endHour = 22;
                     
                     if (hours >= startHour && hours < endHour) {
@@ -833,7 +841,7 @@
         window.addEventListener('load', () => {
             createFogParticles();
             updateServerStatus();
-            setInterval(updateServerStatus, 100);
+            setInterval(updateServerStatus, 30000);
         });
     </script>
 </body>
