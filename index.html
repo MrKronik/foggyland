@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FoggyLand — Ванильный SMP сервер</title>
+    
+    <!-- Favicon (иконка сайта) -->
+    <link rel="icon" type="image/jpeg" href="https://i.ibb.co/hJ7qgtBB/x-x.jpg">
+    <link rel="apple-touch-icon" href="https://i.ibb.co/hJ7qgtBB/x-x.jpg">
+    
     <style>
         * {
             margin: 0;
@@ -512,7 +517,7 @@
             </div>
             <div id="countdownContainer"></div>
             <div>
-                <span class="ip">✨ play.foggyland.ru ✨</span>
+                <span class="ip">✨ foggyland.ru ✨</span>
             </div>
             
             <!-- Социальные кнопки -->
@@ -556,7 +561,7 @@
                     <li>🔹 Максимум честности — нет донат-привилегий</li>
                 </ul>
                 <div class="schedule" style="margin-top: 1rem;">
-                    🕐 Время работы: 7:00–10:00 до 22:00 МСК
+                    🕐 Время работы: 8:00 до 22:00 МСК
                 </div>
             </div>
 
@@ -593,7 +598,7 @@
                     <li>🎙️ Живое общение через голосовой чат</li>
                     <li>⚔️ PvP только для желающих (/pvp)</li>
                     <li>🛡️ Защита от гриферов и откат действий</li>
-                    <li>💡 Активный администратор (это я!)</li>
+                    <li>💡 Активный администратор shadowcartin</li>
                 </ul>
             </div>
 
@@ -610,7 +615,6 @@
                     <li>🏗️ Конкурсы на лучшую постройку</li>
                     <li>🎁 Сезонные ивенты с призами</li>
                     <li>🌟 Розыгрыши среди активных игроков</li>
-                    <li>🆕 Обновления каждую пятницу</li>
                 </ul>
                 <p style="margin-top: 0.8rem;">Следи за новостями в <a href="https://discord.gg/ywkNfF7u" target="_blank" style="color: #5865F2; text-decoration: none; font-weight: 600;">Discord</a> и <a href="https://t.me/foggyland" target="_blank" style="color: #0088cc; text-decoration: none; font-weight: 600;">Telegram</a>!</p>
             </div>
@@ -729,8 +733,8 @@ async function updateServerStatus() {
         window.addEventListener('load', () => {
             createFogParticles();
             updateServerStatus();
-            // Обновляем статус каждую минуту
-            setInterval(updateServerStatus, 10000);
+            // Обновляем статус каждую СЕКУНДУ
+            setInterval(updateServerStatus, 1000);
         });
     </script>
 </body>
