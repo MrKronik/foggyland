@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Автообновление каждые 10 секунд -->
+    <meta http-equiv="refresh" content="10">
     <title>ꜰᴏɢɢʏʟᴀɴᴅ — ᴠᴀɴɪʟᴀ-sᴍᴘ сервер</title>
     
     <!-- Favicon (иконка сайта) -->
@@ -654,7 +656,7 @@
                     <!-- IP сервера -->
                     <div class="link-item">
                         <span class="link-label">🎮 IP сервера:</span>
-                        <span class="ip-text" onclick="copyIP('play.foggyland.ru')">foggyland.ru</span>
+                        <span class="ip-text" onclick="copyIP('play.foggyland.ru')">play.foggyland.ru</span>
                     </div>
                     
                     <!-- Правила -->
@@ -666,7 +668,7 @@
                     <!-- Поддержка -->
                     <div class="link-item">
                         <span class="link-label">💰 Поддержка:</span>
-                        <a href="https://store.foggyland.ru" class="mini-btn btn-donate">store.foggyland.ru</a>
+                        <a href="https://store-foggyland.ru" class="mini-btn btn-donate">store.foggyland.ru</a>
                     </div>
                     
                     <!-- Discord -->
@@ -790,7 +792,7 @@
             statusText.style.color = '#FFA500';
             
             try {
-                const response = await fetch('https://api.mcsrvstat.us/2/foggyland.ru');
+                const response = await fetch('https://api.mcsrvstat.us/2/play.foggyland.ru');
                 const data = await response.json();
                 
                 statusDot.className = 'status-dot';
@@ -841,7 +843,6 @@
         window.addEventListener('load', () => {
             createFogParticles();
             updateServerStatus();
-            setInterval(updateServerStatus, 1000);
         });
     </script>
 </body>
