@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Автообновление каждые 10 секунд -->
-    <meta http-equiv="refresh" content="30">
     <title>ꜰᴏɢɢʏʟᴀɴᴅ — ᴠᴀɴɪʟᴀ-sᴍᴘ сервер</title>
     
     <!-- Favicon (иконка сайта) -->
@@ -416,6 +414,9 @@
             font-weight: 600;
             transition: all 0.3s ease;
             color: white;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
         }
 
         .discord-main-btn {
@@ -428,6 +429,24 @@
 
         .youtube-main-btn {
             background: linear-gradient(135deg, #ff0000, #cc0000);
+        }
+
+        .music-main-btn {
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+        }
+
+        .music-main-btn.playing {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            animation: musicPulse 0.5s ease-in-out infinite;
+        }
+
+        @keyframes musicPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
         }
 
         .owner-main-btn {
@@ -595,6 +614,13 @@
     <!-- Эффект тумана -->
     <div class="fog-container" id="fogContainer"></div>
 
+    <!-- Скрытый аудио плеер для MP3 -->
+    <audio id="bgMusic" loop preload="none">
+        <!-- ЗАМЕНИ ССЫЛКУ НА СВОЙ MP3 ФАЙЛ -->
+        <source src="https://files.catbox.moe/1qrnyb.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает аудио элемент.
+    </audio>
+
     <div class="container">
         <div class="hero">
             <h1>🌫️ FOGGYLAND</h1>
@@ -624,6 +650,9 @@
                 <a href="https://youtube.com/@mrkronick.official?si=Wo6TkJq9wMlWPdV6" class="social-btn youtube-main-btn" target="_blank">
                     ▶️ YouTube
                 </a>
+                <button class="social-btn music-main-btn" id="musicBtn" onclick="toggleMusic()">
+                    🎵 Включить музыку
+                </button>
                 <a href="https://t.me/Alexander_Kronik" class="social-btn owner-main-btn" target="_blank">
                     👑 Связаться с владельцем
                 </a>
@@ -667,7 +696,7 @@
                     <!-- IP сервера -->
                     <div class="link-item">
                         <span class="link-label">🎮 IP сервера:</span>
-                        <span class="ip-text" onclick="copyIP('foggyland.ru')">play.foggyland.ru</span>
+                        <span class="ip-text" onclick="copyIP('foggyland.ru')">foggyland.ru</span>
                     </div>
                     
                     <!-- Правила -->
@@ -696,7 +725,7 @@
                     
                     <!-- YouTube -->
                     <div class="link-item">
-                        <span class="link-label">▶️ YouTube Кроник:</span>
+                        <span class="link-label">▶️ YouTube:</span>
                         <a href="https://youtube.com/@mrkronick.official?si=Wo6TkJq9wMlWPdV6" target="_blank" class="mini-btn btn-youtube">@mrkronick</a>
                     </div>
                     
@@ -718,7 +747,7 @@
                 <h2>🎮 Как начать играть</h2>
                 <ol style="margin-left: 1.2rem;">
                     <li>Установи Minecraft версии 1.21 - 26.1.2 (через лаунчер)</li>
-                    <li>Добавь сервер: <strong>play.foggyland.ru</strong></li>
+                    <li>Добавь сервер: <strong>foggyland.ru</strong></li>
                     <li>Дождись времени работы сервера (с 8:00 до 22:00 МСК)</li>
                     <li>Заходи и наслаждайся уютной игрой!</li>
                 </ol>
@@ -741,7 +770,7 @@
             <div class="card">
                 <h2>📢 Поддержка сервера</h2>
                 <p>Если хочешь помочь развитию FoggyLand — ты можешь поддержать проект на <strong>store.foggyland.ru</strong>. Все средства идут на улучшение сервера, хостинг и ивенты.</p>
-                <a href="https://store-foggyland.ru" class="link-btn">🔗 Поддержать</a>
+                <a href="https://store.foggyland.ru" class="link-btn">🔗 Поддержать</a>
             </div>
 
             <div class="card">
@@ -758,7 +787,7 @@
 
         <div class="footer">
             🧡 FoggyLand — место, где ванильный Minecraft становится уютным. <br>
-            © 2026 • IP: play.foggyland.ru • Сайт для доната: store.foggyland.ru
+            © 2026 • IP: foggyland.ru • Сайт для доната: store.foggyland.ru
         </div>
     </div>
 
@@ -796,6 +825,36 @@
                     }, 2000);
                 });
             });
+        }
+
+        // Управление музыкой через MP3
+        let isMusicPlaying = false;
+
+        function toggleMusic() {
+            const audio = document.getElementById('bgMusic');
+            const musicBtn = document.getElementById('musicBtn');
+            
+            if (!isMusicPlaying) {
+                audio.volume = 0.15; // Тихий звук (15%)
+                audio.play().then(() => {
+                    isMusicPlaying = true;
+                    musicBtn.innerHTML = '🎵 Выключить музыку';
+                    musicBtn.classList.add('playing');
+                }).catch(error => {
+                    console.log('Ошибка воспроизведения:', error);
+                    musicBtn.innerHTML = '🎵 Ошибка загрузки';
+                    setTimeout(() => {
+                        musicBtn.innerHTML = '🎵 Включить музыку';
+                        musicBtn.classList.remove('playing');
+                    }, 2000);
+                });
+            } else {
+                audio.pause();
+                audio.currentTime = 0;
+                isMusicPlaying = false;
+                musicBtn.innerHTML = '🎵 Включить музыку';
+                musicBtn.classList.remove('playing');
+            }
         }
 
         // Функция проверки реального статуса сервера через API
@@ -860,6 +919,8 @@
         window.addEventListener('load', () => {
             createFogParticles();
             updateServerStatus();
+            // Обновляем только статус каждые 10 секунд (без перезагрузки страницы)
+            setInterval(updateServerStatus, 45000);
         });
     </script>
 </body>
